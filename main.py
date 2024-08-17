@@ -1,6 +1,6 @@
 import pygame
 from globals import *
-from sprites import Player
+from sprites import Player, Ball
 
 class Game:
     
@@ -12,6 +12,7 @@ class Game:
         self.running = True
         self.group = pygame.sprite.Group()
         self.player = Player(self.group)
+        self.ball = Ball(self.group)
         
     def game_loop(self):
         while self.running:
@@ -22,7 +23,7 @@ class Game:
                     self.running = False
             
             # Updates
-            self.player.update()
+            self.group.update()
             
             # draw game
             self.display_surf.fill('black')
