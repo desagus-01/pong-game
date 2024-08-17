@@ -1,6 +1,6 @@
 import pygame
 from globals import *
-from player import Player
+from sprites import Player
 
 class Game:
     
@@ -8,8 +8,10 @@ class Game:
         # set-up
         pygame.init()
         self.display_surf = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+        pygame.display.set_caption('')
         self.running = True
-        self.player = Player(self.display_surf)
+        self.group = pygame.sprite.Group()
+        self.player = Player(self.group)
         
     def game_loop(self):
         while self.running:
@@ -19,9 +21,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     self.running = False
             
+            # Updates
+            self.player.update()
+            
             # draw game
             self.display_surf.fill('black')
-            self.player.update()
+            self.group.draw(self.display_surf) 
             
             # Update images
             pygame.display.update()
