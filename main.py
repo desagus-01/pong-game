@@ -4,18 +4,26 @@ from sprites import Player, Ball
 
 class Game:
     
-    def __init__(self) -> None:
+    def __init__(self, fps) -> None:
         # set-up
         pygame.init()
         self.display_surf = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         pygame.display.set_caption('')
+        self.clock = pygame.time.Clock()
         self.running = True
+        self.dt = 2
+        self.fps = fps
         self.group = pygame.sprite.Group()
         self.player = Player(self.group)
         self.ball = Ball(self.group)
+    
+    def set_dt(self, fps):
+        self.dt = self.clock.tick() / fps 
         
     def game_loop(self):
+        
         while self.running:
+            self.set_dt(self.fps) 
             
             # event loop
             for event in pygame.event.get():
@@ -36,5 +44,5 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game()
+    game = Game(fps=100)
     game.game_loop()

@@ -41,17 +41,20 @@ class Ball(pygame.sprite.Sprite):
         self.position = pygame.Vector2(1, 1)
         self.speed = 0.5
         
-    # def input(self):     
-    #     keys = pygame.key.get_pressed()  
-    #     if keys[pygame.K_SPACE]:
-    #         self.position = (1, 1)
-    #         print(f'{self.position}')
-        
     def move(self):
+        # Standard movement
         self.rect.center += self.position * self.speed
+        
+        # Bouncing
+        if self.rect.bottom >= WINDOW_HEIGHT:
+            self.position.y = -1
+        elif self.rect.right >= WINDOW_WIDTH:
+            self.position.x = -1
+        elif self.rect.top == 0:
+            self.position.y = 1
+
    
     def update(self):
-        # self.input()
         self.move()
         
         
