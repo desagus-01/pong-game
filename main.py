@@ -1,6 +1,6 @@
 import pygame
 from globals import *
-from sprites import Player, Ball
+from sprites import Player, Player2, Ball
 
 class Game:
     
@@ -14,8 +14,9 @@ class Game:
         self.dt = 2
         self.fps = fps
         self.group = pygame.sprite.Group()
-        self.player = Player(self.group)
-        self.ball = Ball(self.player, self.group)
+        self.player1 = Player(self.group)
+        self.player2 = Player2(self.group)
+        self.ball = Ball(self.player1, self.player2, self.group)
     
     def set_dt(self, fps):
         self.dt = self.clock.tick() / fps 

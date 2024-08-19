@@ -28,10 +28,38 @@ class Player(pygame.sprite.Sprite):
     def update(self):
         self.input()
         self.move()
+      
+
+class Player2(pygame.sprite.Sprite):
+    def __init__(self, groups) -> None:
+        super().__init__(groups)
+        #image
+        self.surf = pygame.Surface((60, 100))
+        self.image = self.surf
+        self.image.fill('green')
+        #movement
+        self.rect = self.image.get_frect(center = (WINDOW_WIDTH, WINDOW_HEIGHT / 2))
+        self.position = pygame.Vector2()
+        self.speed = 2
         
+    def input(self):     
+        keys = pygame.key.get_pressed()  
+        if keys[pygame.K_s] and self.rect.bottom <= WINDOW_HEIGHT:
+            self.position.y = 1
+        elif keys[pygame.K_w] and self.rect.top >= 0:
+            self.position.y = -1
+        else:
+            self.position.y = 0
+    
+    def move(self):
+        self.rect.y += self.position.y * self.speed
+        
+    def update(self):
+        self.input()
+        self.move()  
 
 class Ball(pygame.sprite.Sprite):
-    def __init__(self, player, groups) -> None:
+    def __init__(self, player1, player2, groups) -> None:
         super().__init__(groups)
         #image
         self.image = self.surf = pygame.Surface((BALL_WIDTH, BALL_HEIGHT))
@@ -40,7 +68,8 @@ class Ball(pygame.sprite.Sprite):
         #movement
         self.position = pygame.Vector2(1, 1)
         self.speed = 0.5
-        self.player = player
+        self.player1 = player1
+        self.player2 = player2
         
     def move(self):
         # Standard movement
@@ -49,18 +78,18 @@ class Ball(pygame.sprite.Sprite):
         # Bouncing
         if self.rect.bottom >= WINDOW_HEIGHT:
             self.position.y = -1
-        elif self.rect.right >= WINDOW_WIDTH:
-            self.position.x = -1
         elif self.rect.top == 0:
             self.position.y = 1
-        elif pygame.FRect.colliderect(self.player.rect, self.rect):
+        elif pygame.FRect.colliderect(self.player1.rect, self.rect):
             self.position.x = 1
-        elif self.rect.right == 0:
+        elif pygame.FRect.colliderect(self.player2.rect, self.rect):
+            self.position.x = -1
+        elif self.rect.right == 0 or self.rect.left >= WINDOW_WIDTH:
             self.kill()
-
-        print(f'ball:{self.rect.left}, player:{self.player.rect.y}')
+            
+        print(f'{self.rect}')
         
     def update(self):
         self.move()
         
-        
+
