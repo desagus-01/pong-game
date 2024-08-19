@@ -15,7 +15,7 @@ class Game:
         self.fps = fps
         self.group = pygame.sprite.Group()
         self.player = Player(self.group)
-        self.ball = Ball(self.group)
+        self.ball = Ball(self.player, self.group)
     
     def set_dt(self, fps):
         self.dt = self.clock.tick() / fps 

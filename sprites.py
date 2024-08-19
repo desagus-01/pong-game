@@ -31,7 +31,7 @@ class Player(pygame.sprite.Sprite):
         
 
 class Ball(pygame.sprite.Sprite):
-    def __init__(self, groups) -> None:
+    def __init__(self, player, groups) -> None:
         super().__init__(groups)
         #image
         self.image = self.surf = pygame.Surface((BALL_WIDTH, BALL_HEIGHT))
@@ -40,6 +40,7 @@ class Ball(pygame.sprite.Sprite):
         #movement
         self.position = pygame.Vector2(1, 1)
         self.speed = 0.5
+        self.player = player
         
     def move(self):
         # Standard movement
@@ -52,8 +53,13 @@ class Ball(pygame.sprite.Sprite):
             self.position.x = -1
         elif self.rect.top == 0:
             self.position.y = 1
+        elif pygame.FRect.colliderect(self.player.rect, self.rect):
+            self.position.x = 1
+        elif self.rect.right == 0:
+            self.kill()
 
-   
+        print(f'ball:{self.rect.left}, player:{self.player.rect.y}')
+        
     def update(self):
         self.move()
         
