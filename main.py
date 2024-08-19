@@ -1,6 +1,6 @@
 import pygame
 from globals import *
-from sprites import Player, Player2, Ball
+from sprites import Player, Ball
 
 class Game:
     
@@ -14,12 +14,19 @@ class Game:
         self.dt = 2
         self.fps = fps
         self.group = pygame.sprite.Group()
-        self.player1 = Player(self.group)
-        self.player2 = Player2(self.group)
+        self.player1 = Player((0, WINDOW_HEIGHT / 2), 'red', self.group, True)
+        self.player2 = Player((WINDOW_WIDTH, WINDOW_HEIGHT / 2), 'green', self.group, False)
         self.ball = Ball(self.player1, self.player2, self.group)
     
     def set_dt(self, fps):
         self.dt = self.clock.tick() / fps 
+        
+    def restart(self):
+        if not self.ball.on:
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_SPACE]:
+                self.ball = Ball(self.player1, self.player2, self.group)
+                self.running = True
         
     def game_loop(self):
         
@@ -30,7 +37,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-            
+                               
             # Updates
             self.group.update()
             
@@ -40,6 +47,9 @@ class Game:
             
             # Update images
             pygame.display.update()
+
+            # New ball to restart
+            self.restart()
             
         pygame.quit()
 
